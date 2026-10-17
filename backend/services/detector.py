@@ -17,10 +17,19 @@ _model=None
 def get_model():
     global _model
     if _model is None:
-        os.makedirs(MODEL_DIR,exist_ok=True)
-        _model=YOLO(MODEL_PATH if os.path.exists(MODEL_PATH) else MODEL_URL)
-    return _model
+        base = os.path.abspath(
+            os.path.join(os.path.dirname(__file__), "..")
+        )
+        local_model = os.path.join(base, "weights", "best.pt")
 
+        if os.path.exists(local_model):
+            _model = YOLO(local_model)
+        elif os.path.exists(MODEL_PATH):
+            _model = YOLO(MODEL_PATH)
+        else:
+            _model = YOLO(MODEL_URL)
+
+    return _model
 def get_segmenter():
     """Load an Ultralytics SAM model only when segmentation is enabled.
 

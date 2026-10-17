@@ -9,7 +9,16 @@ import os, uuid, json, hmac, hashlib, base64
 from datetime import datetime, timezone
 
 app=FastAPI(title='FleetNetra AI API',version='2.0.0')
-app.add_middleware(CORSMiddleware,allow_origins=['*'],allow_credentials=True,allow_methods=['*'],allow_headers=['*'])
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "https://quantum-hex-imzb.vercel.app",
+        "http://localhost:5173",
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 os.makedirs('evidence',exist_ok=True); os.makedirs('data',exist_ok=True)
 app.mount('/evidence',StaticFiles(directory='evidence'),name='evidence')
 init_db()
